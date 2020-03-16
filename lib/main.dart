@@ -53,6 +53,7 @@ class _SongsListState extends State<SongsList> {
                   'Songs Title',
                   style: Theme.of(context).textTheme.headline5,
                 ),
+                SizedBox(height: 5),
                 Text(
                   '${widget.items[index]}',
                   style: Theme.of(context).textTheme.bodyText1,
