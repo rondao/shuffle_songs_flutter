@@ -12,15 +12,13 @@ class ShuffleSongs extends StatelessWidget {
         primaryColor: Color(0xFF452E3E),
         primaryColorDark: Color(0xFF362436),
       ),
-      home: SongsList(title: 'Shuffle Songs'),
+      home: SongsList(),
     );
   }
 }
 
 class SongsList extends StatefulWidget {
-  SongsList({Key key, this.title}) : super(key: key);
-
-  final String title;
+  final items = List<String>.generate(10000, (i) => "Item $i");
 
   @override
   _SongsListState createState() => _SongsListState();
@@ -31,11 +29,16 @@ class _SongsListState extends State<SongsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Suffle Songs"),
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
-      body: Center(
-        child: Text('Sample text!'),
+      body: ListView.builder(
+        itemCount: widget.items.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('${widget.items[index]}'),
+          );
+        },
       ),
     );
   }
