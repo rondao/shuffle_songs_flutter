@@ -9,8 +9,8 @@ class ShuffleSongs extends StatelessWidget {
       title: 'Shuffle Songs',
       theme: ThemeData(
         accentColor: Color(0xFF783F4F),
-        primaryColor: Color(0xFF362436),
-        primaryColorLight: Color(0xFF452E3E),
+        primaryColor: Color(0xFF452E3E),
+        primaryColorDark: Color(0xFF362436),
       ),
       home: SongsList(title: 'Shuffle Songs'),
     );
@@ -33,7 +33,7 @@ class _SongsListState extends State<SongsList> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      backgroundColor: Theme.of(context).primaryColorLight,
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: Center(
         child: Text('Sample text!'),
       ),
