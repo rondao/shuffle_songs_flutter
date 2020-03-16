@@ -39,6 +39,12 @@ class _SongsListState extends State<SongsList> {
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
           return ListTile(
+            // TODO: Change from Icon to CircleAvatar.
+            leading: Icon(
+              Icons.account_circle,
+              color: Colors.white70,
+              size: 48,
+            ),
             title: Text(
               '${widget.items[index]}',
               style: Theme.of(context).textTheme.bodyText1,
