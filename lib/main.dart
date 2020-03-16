@@ -11,6 +11,9 @@ class ShuffleSongs extends StatelessWidget {
         accentColor: Color(0xFF783F4F),
         primaryColor: Color(0xFF452E3E),
         primaryColorDark: Color(0xFF362436),
+        textTheme: TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
+        ),
       ),
       home: SongsList(),
     );
@@ -36,7 +39,10 @@ class _SongsListState extends State<SongsList> {
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text('${widget.items[index]}'),
+            title: Text(
+              '${widget.items[index]}',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           );
         },
       ),
