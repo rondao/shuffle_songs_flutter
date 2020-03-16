@@ -15,20 +15,32 @@ class SongTile extends StatelessWidget {
         color: Colors.white70,
         size: 48,
       ),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            this.title,
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          SizedBox(height: 5),
-          Text(
-            this.description,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-        ],
-      ),
+      title: SongDescription(title, description),
+    );
+  }
+}
+
+class SongDescription extends StatelessWidget {
+  final String description;
+  final String title;
+
+  SongDescription(this.title, this.description);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        SizedBox(height: 5),
+        Text(
+          description,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ],
     );
   }
 }
