@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'songsList.dart';
+
 void main() => runApp(ShuffleSongs());
 
 class ShuffleSongs extends StatelessWidget {
@@ -39,34 +41,10 @@ class _SongsListState extends State<SongsList> {
       body: ListView.separated(
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            // TODO: Change from Icon to CircleAvatar.
-            leading: Icon(
-              Icons.account_circle,
-              color: Colors.white70,
-              size: 48,
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Songs Title',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                SizedBox(height: 5),
-                Text(
-                  '${widget.items[index]}',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ],
-            ),
-          );
+          return SongTile('Title', widget.items[index]);
         },
         separatorBuilder: (context, index) {
-          return Divider(
-            color: Colors.grey,
-            thickness: 0.3,
-          );
+          return SongsListDivider();
         },
       ),
     );
