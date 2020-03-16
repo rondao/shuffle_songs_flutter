@@ -35,7 +35,7 @@ class _SongsListState extends State<SongsList> {
         title: Text("Suffle Songs"),
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: widget.items.length,
         itemBuilder: (context, index) {
           return ListTile(
@@ -43,6 +43,12 @@ class _SongsListState extends State<SongsList> {
               '${widget.items[index]}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return Divider(
+            color: Colors.grey,
+            thickness: 0.3,
           );
         },
       ),
