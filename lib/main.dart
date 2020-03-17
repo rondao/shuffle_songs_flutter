@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
+import 'models/song.dart';
+import 'network/songsApi.dart' as songsApi;
 import 'songsList.dart';
 
 void main() => runApp(ShuffleSongs());
@@ -24,13 +27,21 @@ class ShuffleSongs extends StatelessWidget {
 }
 
 class SongsList extends StatefulWidget {
-  final items = List<String>.generate(10000, (i) => "Item $i");
-
   @override
   _SongsListState createState() => _SongsListState();
 }
 
 class _SongsListState extends State<SongsList> {
+  var songs = <Song>[];
+
+  _SongsListState() {
+    final future = songsApi.fetchSongs(http.Client());
+
+    future
+        .then((value) => setState(() => songs = value))
+        .catchError((error) => print(error));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +50,10 @@ class _SongsListState extends State<SongsList> {
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
       body: ListView.separated(
-        itemCount: widget.items.length,
+        itemCount: songs.length,
         itemBuilder: (context, index) {
-          return SongTile('Title', widget.items[index]);
+          return SongTile(
+              songs[index].trackName, songs[index].primaryGenreName);
         },
         separatorBuilder: (context, index) {
           return SongsListDivider();
