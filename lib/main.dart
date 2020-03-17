@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 import 'models/song.dart';
 import 'network/songsApi.dart' as songsApi;
-import 'songsList.dart';
+import 'screens/songsList.dart';
 
 void main() => runApp(ShuffleSongs());
 
