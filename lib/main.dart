@@ -46,7 +46,7 @@ class _SongsListState extends State<SongsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Suffle Songs"),
+        title: Text("Shuffle Songs"),
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
       body: ListView.separated(
