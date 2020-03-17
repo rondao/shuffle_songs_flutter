@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SongTile extends StatelessWidget {
-  final String description;
-  final String title;
+  final String _description;
+  final String _title;
 
-  SongTile(this.title, this.description);
+  SongTile(this._title, this._description);
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +15,16 @@ class SongTile extends StatelessWidget {
         color: Colors.white70,
         size: 48,
       ),
-      title: SongDescription(title, description),
+      title: SongDescription(_title, _description),
     );
   }
 }
 
 class SongDescription extends StatelessWidget {
-  final String description;
-  final String title;
+  final String _description;
+  final String _title;
 
-  SongDescription(this.title, this.description);
+  SongDescription(this._title, this._description);
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,12 @@ class SongDescription extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          title,
+          _title,
           style: Theme.of(context).textTheme.headline5,
         ),
         SizedBox(height: 5),
         Text(
-          description,
+          _description,
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],

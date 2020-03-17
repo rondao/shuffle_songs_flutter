@@ -32,13 +32,13 @@ class SongsList extends StatefulWidget {
 }
 
 class _SongsListState extends State<SongsList> {
-  var songs = <Song>[];
+  var _songs = <Song>[];
 
   _SongsListState() {
     final future = songsApi.fetchSongs(http.Client());
 
     future
-        .then((value) => setState(() => songs = value))
+        .then((value) => setState(() => _songs = value))
         .catchError((error) => print(error));
   }
 
@@ -50,10 +50,10 @@ class _SongsListState extends State<SongsList> {
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
       body: ListView.separated(
-        itemCount: songs.length,
+        itemCount: _songs.length,
         itemBuilder: (context, index) {
           return SongTile(
-              songs[index].trackName, songs[index].primaryGenreName);
+              _songs[index].trackName, _songs[index].primaryGenreName);
         },
         separatorBuilder: (context, index) {
           return SongsListDivider();

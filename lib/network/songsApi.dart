@@ -7,15 +7,15 @@ import 'package:http/http.dart' as http;
 import 'payload.dart';
 import '../models/song.dart';
 
-const baseUrl = 'https://us-central1-tw-exercicio-mobile.cloudfunctions.net/';
-const lookupEndPoint = 'lookup';
+const _baseUrl = 'https://us-central1-tw-exercicio-mobile.cloudfunctions.net/';
+const _lookupEndPoint = 'lookup';
 
-const defaultLookupParams =
+const _defaultLookupParams =
     '?id=909253,1171421960,358714030,1419227,264111789&limit=5';
 
 Future<List<Song>> fetchSongs(http.Client client) async {
   final response =
-      await client.get(baseUrl + lookupEndPoint + defaultLookupParams);
+      await client.get(_baseUrl + _lookupEndPoint + _defaultLookupParams);
 
   return compute(parseSongs, response.body);
 }
