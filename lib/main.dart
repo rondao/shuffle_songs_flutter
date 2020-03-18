@@ -32,14 +32,12 @@ class SongsList extends StatefulWidget {
 }
 
 class _SongsListState extends State<SongsList> {
-  var _songs = <Song>[];
+  Future<List<Song>> _songs;
 
-  _SongsListState() {
-    final future = songsApi.fetchSongs(http.Client());
-
-    future
-        .then((value) => setState(() => _songs = value))
-        .catchError((error) => print(error));
+  @override
+  void initState() {
+    _songs = songsApi.fetchSongs(http.Client());
+    super.initState();
   }
 
   @override
@@ -49,14 +47,23 @@ class _SongsListState extends State<SongsList> {
         title: Text("Shuffle Songs"),
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
-      body: ListView.separated(
-        itemCount: _songs.length,
-        itemBuilder: (context, index) {
-          return SongTile(
-              _songs[index].trackName, _songs[index].primaryGenreName);
-        },
-        separatorBuilder: (context, index) {
-          return SongsListDivider();
+      body: FutureBuilder<List<Song>>(
+        future: _songs,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+
+          return snapshot.hasData
+              ? ListView.separated(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return SongTile(snapshot.data[index].trackName,
+                        snapshot.data[index].primaryGenreName);
+                  },
+                  separatorBuilder: (context, index) {
+                    return SongsListDivider();
+                  },
+                )
+              : Center(child: CircularProgressIndicator());
         },
       ),
     );
