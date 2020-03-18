@@ -1,46 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class SongTile extends StatelessWidget {
-  final String _description;
-  final String _title;
+import '../models/song.dart';
+import '../network/songsApi.dart' as songsApi;
+import 'components/songTile.dart';
 
-  SongTile(this._title, this._description);
-
+class SongsList extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      // TODO: Change from Icon to CircleAvatar.
-      leading: Icon(
-        Icons.account_circle,
-        color: Colors.white70,
-        size: 48,
-      ),
-      title: SongDescription(_title, _description),
-    );
-  }
+  _SongsListState createState() => _SongsListState();
 }
 
-class SongDescription extends StatelessWidget {
-  final String _description;
-  final String _title;
+class _SongsListState extends State<SongsList> {
+  Future<List<Song>> _songs;
 
-  SongDescription(this._title, this._description);
+  @override
+  void initState() {
+    _songs = songsApi.fetchSongs(http.Client());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          _title,
-          style: Theme.of(context).textTheme.headline5,
-        ),
-        SizedBox(height: 5),
-        Text(
-          _description,
-          style: Theme.of(context).textTheme.bodyText1,
-        ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Shuffle Songs"),
+      ),
+      backgroundColor: Theme.of(context).primaryColorDark,
+      body: FutureBuilder<List<Song>>(
+        future: _songs,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+
+          return snapshot.hasData
+              ? ListView.separated(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return SongTile(snapshot.data[index].trackName,
+                        snapshot.data[index].primaryGenreName);
+                  },
+                  separatorBuilder: (context, index) {
+                    return SongsListDivider();
+                  },
+                )
+              : Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }
