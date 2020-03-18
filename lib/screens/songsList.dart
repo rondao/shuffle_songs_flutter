@@ -29,7 +29,14 @@ class _SongsListState extends State<SongsList> {
       body: FutureBuilder<List<Song>>(
         future: _songs,
         builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
+          if (snapshot.hasError)
+            return Center(
+              child: Icon(
+                Icons.cloud_off,
+                color: Colors.white70,
+                size: 128,
+              ),
+            );
 
           return snapshot.hasData
               ? ListView.separated(
