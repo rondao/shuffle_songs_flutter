@@ -11,8 +11,7 @@ class SongTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      // TODO: Change from Icon to CircleAvatar.
-      leading: Image.network(_song.artworkUrl),
+      leading: CircleAvatar(backgroundImage: NetworkImage(_song.artworkUrl)),
       title: SongDescription(_song.trackName, _song.primaryGenreName),
     );
   }
