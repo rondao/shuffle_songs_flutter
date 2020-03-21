@@ -42,8 +42,7 @@ class _SongsListState extends State<SongsList> {
               ? ListView.separated(
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
-                    return SongTile(snapshot.data[index].trackName,
-                        snapshot.data[index].primaryGenreName);
+                    return SongTile(snapshot.data[index]);
                   },
                   separatorBuilder: (context, index) {
                     return SongsListDivider();
