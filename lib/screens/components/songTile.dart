@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../models/song.dart';
+import 'package:shuffle_songs/models/song.dart';
 
 class SongTile extends StatelessWidget {
   final Song _song;

@@ -1,5 +1,5 @@
-import '../models/artist.dart';
-import '../models/song.dart';
+import 'package:shuffle_songs/models/artist.dart';
+import 'package:shuffle_songs/models/song.dart';
 
 class PayloadEnvelope {
   int resultCount;

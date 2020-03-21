@@ -3,9 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-
-import 'payload.dart';
-import '../models/song.dart';
+import 'package:shuffle_songs/models/song.dart';
+import 'package:shuffle_songs/network/payload.dart';
 
 const _baseUrl = 'https://us-central1-tw-exercicio-mobile.cloudfunctions.net/';
 const _lookupEndPoint = 'lookup';
