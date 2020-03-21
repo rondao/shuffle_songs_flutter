@@ -12,15 +12,24 @@ class SongTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CachedNetworkImage(
-        imageUrl: _song.artworkUrl,
-        imageBuilder: (context, imageProvider) => CircleAvatar(
-          backgroundImage: imageProvider,
-        ),
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.cloud_off),
+      title: Row(
+        children: <Widget>[
+          CachedNetworkImage(
+            imageUrl: _song.artworkUrl,
+            imageBuilder: (context, imageProvider) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: CircleAvatar(
+                backgroundImage: imageProvider,
+                radius: 42,
+              ),
+            ),
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.cloud_off),
+          ),
+          SizedBox(width: 12),
+          SongDescription(_song.trackName, _song.primaryGenreName),
+        ],
       ),
-      title: SongDescription(_song.trackName, _song.primaryGenreName),
     );
   }
 }
