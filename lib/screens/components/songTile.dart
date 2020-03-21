@@ -29,17 +29,21 @@ class SongArtwork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: _artworkUrl,
-      imageBuilder: (context, imageProvider) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: CircleAvatar(
-          backgroundImage: imageProvider,
-          radius: 42,
+    return Container(
+      height: 84,
+      width: 84,
+      child: CachedNetworkImage(
+        imageUrl: _artworkUrl,
+        imageBuilder: (context, imageProvider) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: CircleAvatar(
+            backgroundImage: imageProvider,
+            radius: 42,
+          ),
         ),
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.cloud_off),
       ),
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.cloud_off),
     );
   }
 }
