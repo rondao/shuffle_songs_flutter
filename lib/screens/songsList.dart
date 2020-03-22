@@ -81,8 +81,7 @@ Future<List<Song>> shuffleSongs(Future<List<Song>> songs) async {
   final songsByArtist =
       groupBy<Song, int>(await songs, (song) => song.artistId);
 
-  final priorityQueue =
-      PriorityQueue<List<Song>>((list1, list2) => list2.length - list1.length);
+  final priorityQueue = PriorityQueue<List<Song>>(songsListCompare);
   priorityQueue.addAll(songsByArtist.values);
 
   final shuffledSongs = <Song>[];
@@ -100,4 +99,9 @@ Future<List<Song>> shuffleSongs(Future<List<Song>> songs) async {
   if (previousList.isNotEmpty) shuffledSongs.addAll(previousList);
 
   return shuffledSongs;
+}
+
+int songsListCompare(List<Song> list1, List<Song> list2) {
+  final diff = list2.length - list1.length;
+  return diff * 10 + Random().nextInt(10);
 }
