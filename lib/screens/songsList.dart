@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shuffle_songs/main.dart';
 
 import 'package:shuffle_songs/models/song.dart';
 import 'package:shuffle_songs/network/songsApi.dart' as songsApi;
@@ -27,7 +31,9 @@ class _SongsListState extends State<SongsList> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.shuffle),
-            onPressed: () {},
+            onPressed: () => setState(() {
+              _songs = shuffleSongs(_songs);
+            }),
           )
         ],
       ),
@@ -69,4 +75,29 @@ class SongsListDivider extends StatelessWidget {
       thickness: 0.3,
     );
   }
+}
+
+Future<List<Song>> shuffleSongs(Future<List<Song>> songs) async {
+  final songsByArtist =
+      groupBy<Song, int>(await songs, (song) => song.artistId);
+
+  final priorityQueue =
+      PriorityQueue<List<Song>>((list1, list2) => list2.length - list1.length);
+  priorityQueue.addAll(songsByArtist.values);
+
+  final shuffledSongs = <Song>[];
+  while (priorityQueue.isNotEmpty) {
+    shuffledSongs.add(pullRandomSong(priorityQueue));
+  }
+
+  return shuffledSongs;
+}
+
+Song pullRandomSong(PriorityQueue<List<Song>> priorityQueue) {
+  final artistSongs = priorityQueue.removeFirst();
+  final randomSong = artistSongs.removeAt(Random().nextInt(artistSongs.length));
+
+  if (artistSongs.isNotEmpty) priorityQueue.add(artistSongs);
+
+  return randomSong;
 }
