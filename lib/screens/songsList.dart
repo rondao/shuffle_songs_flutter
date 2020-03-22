@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shuffle_songs/main.dart';
 
 import 'package:shuffle_songs/models/song.dart';
 import 'package:shuffle_songs/network/songsApi.dart' as songsApi;
