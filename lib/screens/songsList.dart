@@ -24,6 +24,12 @@ class _SongsListState extends State<SongsList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Shuffle Songs"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.shuffle),
+            onPressed: () {},
+          )
+        ],
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
       body: FutureBuilder<List<Song>>(
