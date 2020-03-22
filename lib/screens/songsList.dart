@@ -86,18 +86,18 @@ Future<List<Song>> shuffleSongs(Future<List<Song>> songs) async {
   priorityQueue.addAll(songsByArtist.values);
 
   final shuffledSongs = <Song>[];
+
+  var previousList = priorityQueue.removeFirst();
   while (priorityQueue.isNotEmpty) {
-    shuffledSongs.add(pullRandomSong(priorityQueue));
+    final currentList = priorityQueue.removeFirst();
+    shuffledSongs
+        .add(currentList.removeAt(Random().nextInt(currentList.length)));
+
+    if (previousList.isNotEmpty) priorityQueue.add(previousList);
+    previousList = currentList;
   }
 
+  if (previousList.isNotEmpty) shuffledSongs.addAll(previousList);
+
   return shuffledSongs;
-}
-
-Song pullRandomSong(PriorityQueue<List<Song>> priorityQueue) {
-  final artistSongs = priorityQueue.removeFirst();
-  final randomSong = artistSongs.removeAt(Random().nextInt(artistSongs.length));
-
-  if (artistSongs.isNotEmpty) priorityQueue.add(artistSongs);
-
-  return randomSong;
 }
