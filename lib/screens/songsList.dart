@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shuffle_songs/main.dart';
 
 import 'package:shuffle_songs/models/song.dart';
 import 'package:shuffle_songs/network/songsApi.dart' as songsApi;
@@ -24,6 +28,14 @@ class _SongsListState extends State<SongsList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Shuffle Songs"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.shuffle),
+            onPressed: () => setState(() {
+              _songs = shuffleSongs(_songs);
+            }),
+          )
+        ],
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
       body: FutureBuilder<List<Song>>(
@@ -63,4 +75,33 @@ class SongsListDivider extends StatelessWidget {
       thickness: 0.3,
     );
   }
+}
+
+Future<List<Song>> shuffleSongs(Future<List<Song>> songs) async {
+  final songsByArtist =
+      groupBy<Song, int>(await songs, (song) => song.artistId);
+
+  final priorityQueue = PriorityQueue<List<Song>>(songsListCompare);
+  priorityQueue.addAll(songsByArtist.values);
+
+  final shuffledSongs = <Song>[];
+
+  var previousList = priorityQueue.removeFirst();
+  while (priorityQueue.isNotEmpty) {
+    final currentList = priorityQueue.removeFirst();
+    shuffledSongs
+        .add(currentList.removeAt(Random().nextInt(currentList.length)));
+
+    if (previousList.isNotEmpty) priorityQueue.add(previousList);
+    previousList = currentList;
+  }
+
+  if (previousList.isNotEmpty) shuffledSongs.addAll(previousList);
+
+  return shuffledSongs;
+}
+
+int songsListCompare(List<Song> list1, List<Song> list2) {
+  final diff = list2.length - list1.length;
+  return diff * 10 + Random().nextInt(10);
 }
