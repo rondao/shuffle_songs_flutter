@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:shuffle_songs/models/song.dart';
 import 'package:shuffle_songs/network/songsApi.dart' as songsApi;
-import 'package:shuffle_songs/screens/components/songTile.dart';
+import 'package:shuffle_songs/ui/components/songTile.dart';
 
 class SongsList extends StatefulWidget {
   @override
