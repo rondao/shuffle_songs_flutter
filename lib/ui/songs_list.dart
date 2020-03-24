@@ -34,7 +34,7 @@ class _SongsListState extends State<SongsList> {
         builder: (context, state) {
           if (state is SongsListLoading) {
             return Center(child: CircularProgressIndicator());
-          } else if (state is SongsListLoaded) {
+          } else if (state is SongsListReady) {
             return ListView.separated(
               itemCount: state.songs.length,
               itemBuilder: (context, index) {

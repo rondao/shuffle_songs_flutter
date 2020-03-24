@@ -27,7 +27,7 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
         yield SongsListLoading();
         try {
           _songs = await songsApi.fetchSongs(http.Client());
-          yield SongsListLoaded(_songs);
+          yield SongsListReady(_songs);
         } catch (e) {
           yield SongsListError();
         }
@@ -35,7 +35,7 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
       case SongsListEvent.shuffleSongs:
         if (_songs.isNotEmpty) {
           _songs = shuffleSongs(_songs);
-          yield SongsListLoaded(_songs);
+          yield SongsListReady(_songs);
         }
         break;
     }

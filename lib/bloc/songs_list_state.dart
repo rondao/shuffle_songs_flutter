@@ -5,9 +5,9 @@ abstract class SongsListState {}
 
 class SongsListLoading extends SongsListState {}
 
-class SongsListLoaded extends SongsListState {
+class SongsListReady extends SongsListState {
   final List<Song> songs;
-  SongsListLoaded(this.songs);
+  SongsListReady(this.songs);
 }
 
 class SongsListError extends SongsListState {}
