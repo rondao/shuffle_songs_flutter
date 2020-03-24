@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shuffle_songs/bloc/songs_list_bloc.dart';
 
 import 'package:shuffle_songs/models/song.dart';
-import 'package:shuffle_songs/network/songs_api.dart' as songsApi;
 import 'package:shuffle_songs/ui/components/song_tile.dart';
 
 class SongsList extends StatefulWidget {
@@ -14,12 +14,10 @@ class SongsList extends StatefulWidget {
 }
 
 class _SongsListState extends State<SongsList> {
-  Future<List<Song>> _songs;
-
   @override
-  void initState() {
-    _songs = songsApi.fetchSongs(http.Client());
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    BlocProvider.of<SongsListBloc>(context).add(SongsListEvent.fetchSongs);
   }
 
   @override
@@ -31,35 +29,34 @@ class _SongsListState extends State<SongsList> {
           IconButton(
             icon: Icon(Icons.shuffle),
             onPressed: () => setState(() {
-              _songs = shuffleSongs(_songs);
+              // _songs = shuffleSongs(_songs);
             }),
           )
         ],
       ),
       backgroundColor: Theme.of(context).primaryColorDark,
-      body: FutureBuilder<List<Song>>(
-        future: _songs,
-        builder: (context, snapshot) {
-          if (snapshot.hasError)
-            return Center(
-              child: Icon(
-                Icons.cloud_off,
-                color: Colors.white70,
-                size: 128,
-              ),
+      body: BlocBuilder<SongsListBloc, SongsListState>(
+        builder: (context, state) {
+          if (state is SongsListLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is SongsListLoaded) {
+            return ListView.separated(
+              itemCount: state.songs.length,
+              itemBuilder: (context, index) {
+                return SongTile(state.songs[index]);
+              },
+              separatorBuilder: (context, index) {
+                return SongsListDivider();
+              },
             );
-
-          return snapshot.hasData
-              ? ListView.separated(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return SongTile(snapshot.data[index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return SongsListDivider();
-                  },
-                )
-              : Center(child: CircularProgressIndicator());
+          } else {
+            return Center(
+                child: Icon(
+              Icons.cloud_off,
+              color: Colors.white70,
+              size: 128,
+            ));
+          }
         },
       ),
     );
