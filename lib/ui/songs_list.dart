@@ -1,11 +1,7 @@
-import 'dart:math';
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shuffle_songs/bloc/songs_list_bloc.dart';
 
-import 'package:shuffle_songs/models/song.dart';
 import 'package:shuffle_songs/ui/components/song_tile.dart';
 
 class SongsList extends StatefulWidget {
@@ -28,9 +24,8 @@ class _SongsListState extends State<SongsList> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.shuffle),
-            onPressed: () => setState(() {
-              // _songs = shuffleSongs(_songs);
-            }),
+            onPressed: () => BlocProvider.of<SongsListBloc>(context)
+                .add(SongsListEvent.shuffleSongs),
           )
         ],
       ),
@@ -71,33 +66,4 @@ class SongsListDivider extends StatelessWidget {
       thickness: 0.3,
     );
   }
-}
-
-Future<List<Song>> shuffleSongs(Future<List<Song>> songs) async {
-  final songsByArtist =
-      groupBy<Song, int>(await songs, (song) => song.artistId);
-
-  final priorityQueue = PriorityQueue<List<Song>>(songsListCompare);
-  priorityQueue.addAll(songsByArtist.values);
-
-  final shuffledSongs = <Song>[];
-
-  var previousList = priorityQueue.removeFirst();
-  while (priorityQueue.isNotEmpty) {
-    final currentList = priorityQueue.removeFirst();
-    shuffledSongs
-        .add(currentList.removeAt(Random().nextInt(currentList.length)));
-
-    if (previousList.isNotEmpty) priorityQueue.add(previousList);
-    previousList = currentList;
-  }
-
-  if (previousList.isNotEmpty) shuffledSongs.addAll(previousList);
-
-  return shuffledSongs;
-}
-
-int songsListCompare(List<Song> list1, List<Song> list2) {
-  final diff = list2.length - list1.length;
-  return diff * 10 + Random().nextInt(10);
 }
