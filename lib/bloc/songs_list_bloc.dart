@@ -3,17 +3,19 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:shuffle_songs/models/song.dart';
-import 'package:shuffle_songs/network/songs_api.dart' as songsApi;
+import 'package:shuffle_songs/repository/songs_repository.dart';
 
 part 'songs_list_state.dart';
 
 enum SongsListEvent { fetchSongs, shuffleSongs }
 
 class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
+  SongsRepository songsRepository;
   var _songs = <Song>[];
+
+  SongsListBloc(this.songsRepository);
 
   @override
   SongsListState get initialState => SongsListLoading();
@@ -26,7 +28,7 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
       case SongsListEvent.fetchSongs:
         yield SongsListLoading();
         try {
-          _songs = await songsApi.fetchSongs(http.Client());
+          _songs = await songsRepository.fetchSongs();
           yield SongsListReady(_songs);
         } catch (e) {
           yield SongsListError();
