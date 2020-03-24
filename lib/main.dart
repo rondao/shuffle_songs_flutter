@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shuffle_songs/ui/songsList.dart';
+import 'package:shuffle_songs/ui/songs_list.dart';
 
 void main() => runApp(ShuffleSongs());
 
