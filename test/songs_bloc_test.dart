@@ -16,7 +16,7 @@ void main() {
 
   group('SongsListEvent.fetchSongs', () {
     test(
-      '(Without Bloc Test Library) Emits [SongsListLoading, SongsListReady] when successful',
+      '(Without Bloc Test Library) Emits [SongsListInitial, SongsListLoading, SongsListReady] when successful',
       () {
         when(mockSongsRepository.fetchSongs())
             .thenAnswer((_) async => mockSongsList);
@@ -27,6 +27,7 @@ void main() {
         expectLater(
           bloc,
           emitsInOrder([
+            SongsListInitial(),
             SongsListLoading(),
             SongsListReady(mockSongsList),
           ]),

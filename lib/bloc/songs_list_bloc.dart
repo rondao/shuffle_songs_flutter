@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shuffle_songs/models/song.dart';
@@ -18,7 +19,7 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
   SongsListBloc(this.songsRepository);
 
   @override
-  SongsListState get initialState => SongsListLoading();
+  SongsListState get initialState => SongsListInitial();
 
   @override
   Stream<SongsListState> mapEventToState(
