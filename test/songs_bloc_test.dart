@@ -63,4 +63,19 @@ void main() {
       ],
     );
   });
+  group('SongsListEvent.shuffleSongs', () {
+    blocTest(
+      'emits [SongsListReady] when successful',
+      build: () async {
+        when(mockSongsRepository.fetchSongs())
+            .thenThrow(Error());
+        return SongsListBloc(mockSongsRepository);
+      },
+      act: (bloc) => bloc.add(SongsListEvent.fetchSongs),
+      expect: [
+        SongsListLoading(),
+        SongsListError(),
+      ],
+    );
+  });
 }
