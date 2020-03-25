@@ -16,7 +16,7 @@ void main() {
   });
 
   blocTest(
-    'FechSongs and ShuffleSongs emits [SongsListLoading, SongsListReady, SongsListReady] when successful',
+    'FechSongs and ShuffleSongs emits [SongsListInitial, SongsListLoading, SongsListReady, SongsListReady] when successful',
     build: () async {
       when(mockSongsRepository.fetchSongs())
           .thenAnswer((_) async => mockSongsList);
@@ -26,8 +26,9 @@ void main() {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
+    skip: 0,
     expect: [
-      // SongsListInitial(), - blocTest skips first initial state by default.
+      SongsListInitial(), // Do not skip initial state.
       SongsListLoading(),
       SongsListReady(mockSongsList),
       isA<SongsListReady>(),
