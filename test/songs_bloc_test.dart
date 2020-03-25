@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shuffle_songs/bloc/songs_list_bloc.dart';
@@ -16,7 +17,7 @@ void main() {
 
   group('SongsListEvent.fetchSongs', () {
     test(
-      '(Without Bloc Test Library) Emits [SongsListInitial, SongsListLoading, SongsListReady] when successful',
+      'emits [SongsListInitial, SongsListLoading, SongsListReady] when successful (Without Bloc Test Library)',
       () {
         when(mockSongsRepository.fetchSongs())
             .thenAnswer((_) async => mockSongsList);
@@ -33,6 +34,20 @@ void main() {
           ]),
         );
       },
+    );
+    blocTest(
+      'emits [SongsListLoading, SongsListReady] when successful',
+      build: () async {
+        when(mockSongsRepository.fetchSongs())
+            .thenAnswer((_) async => mockSongsList);
+        return SongsListBloc(mockSongsRepository);
+      },
+      act: (bloc) => bloc.add(SongsListEvent.fetchSongs),
+      expect: [
+        // SongsListInitial(), - blocTest does not consider the initial state.
+        SongsListLoading(),
+        SongsListReady(mockSongsList),
+      ],
     );
   });
 }
