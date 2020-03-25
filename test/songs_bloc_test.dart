@@ -10,9 +10,11 @@ class MockSongsRepository extends Mock implements SongsRepository {}
 
 void main() {
   MockSongsRepository mockSongsRepository;
+  SongsListBloc songsListBloc;
 
   setUp(() {
     mockSongsRepository = MockSongsRepository();
+    songsListBloc = SongsListBloc(mockSongsRepository);
   });
 
   blocTest(
@@ -20,7 +22,7 @@ void main() {
     build: () async {
       when(mockSongsRepository.fetchSongs())
           .thenAnswer((_) async => mockSongsList);
-      return SongsListBloc(mockSongsRepository);
+      return songsListBloc;
     },
     act: (bloc) async {
       bloc.add(SongsListEvent.fetchSongs);
@@ -33,6 +35,9 @@ void main() {
       SongsListReady(mockSongsList),
       isA<SongsListReady>(),
     ],
+    verify: (_) async {
+      verify(mockSongsRepository.fetchSongs()).called(1);
+    },
   );
   blocTest(
     'FetchSongs emits [SongsListLoading, SongsListError] when failure',
@@ -45,5 +50,8 @@ void main() {
       SongsListLoading(),
       SongsListError(),
     ],
+    verify: (_) async {
+      verify(mockSongsRepository.fetchSongs()).called(1);
+    },
   );
 }
