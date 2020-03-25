@@ -49,5 +49,18 @@ void main() {
         SongsListReady(mockSongsList),
       ],
     );
+    blocTest(
+      'emits [SongsListLoading, SongsListError] when failure',
+      build: () async {
+        when(mockSongsRepository.fetchSongs())
+            .thenThrow(Error());
+        return SongsListBloc(mockSongsRepository);
+      },
+      act: (bloc) => bloc.add(SongsListEvent.fetchSongs),
+      expect: [
+        SongsListLoading(),
+        SongsListError(),
+      ],
+    );
   });
 }
