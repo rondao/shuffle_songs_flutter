@@ -36,7 +36,7 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
         }
         break;
       case SongsListEvent.shuffleSongs:
-        if (_songs.isNotEmpty) {
+        if (_songs != null && _songs.isNotEmpty) {
           _songs = shuffleSongs(_songs);
           yield SongsListReady(_songs);
         }
