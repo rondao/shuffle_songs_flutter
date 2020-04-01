@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class Song extends Equatable {
-  int id;
-  int artistId;
-  int collectionId;
-  int trackTimeMillis;
-  String artistName;
-  String artworkUrl;
-  String collectionName;
-  String country;
-  String primaryGenreName;
-  String releaseDate;
-  String trackCensoredName;
-  String trackExplicitness;
-  String trackName;
-  String wrapperType;
+  final int id;
+  final int artistId;
+  final int collectionId;
+  final int trackTimeMillis;
+  final String artistName;
+  final String artworkUrl;
+  final String collectionName;
+  final String country;
+  final String primaryGenreName;
+  final String releaseDate;
+  final String trackCensoredName;
+  final String trackExplicitness;
+  final String trackName;
+  final String wrapperType;
 
   Song(
       {this.id,
