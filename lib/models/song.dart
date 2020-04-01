@@ -1,4 +1,6 @@
-class Song {
+import 'package:equatable/equatable.dart';
+
+class Song extends Equatable {
   int id;
   int artistId;
   int collectionId;
@@ -62,4 +64,22 @@ class Song {
         'trackName': this.trackName,
         'wrapperType': this.wrapperType,
       };
+
+  @override
+  List<Object> get props => [
+        id,
+        artistId,
+        collectionId,
+        trackTimeMillis,
+        artistName,
+        artworkUrl,
+        collectionName,
+        country,
+        primaryGenreName,
+        releaseDate,
+        trackCensoredName,
+        trackExplicitness,
+        trackName,
+        wrapperType,
+      ];
 }
