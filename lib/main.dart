@@ -21,7 +21,7 @@ class ShuffleSongs extends StatelessWidget {
         ),
       ),
       home: BlocProvider(
-          create: (BuildContext context) => SongsListBloc(SongsNetworkRepository()),
+          create: (_) => SongsListBloc(SongsNetworkRepository()),
           child: SongsList()),
     );
   }

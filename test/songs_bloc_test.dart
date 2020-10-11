@@ -18,75 +18,71 @@ void main() {
     songsListBloc = SongsListBloc(mockSongsRepository);
   });
 
-  blocTest(
-    'FetchSongs and ShuffleSongs emits [SongsListInitial, SongsListLoading, SongsListReady, SongsListReady] when successful and shuffles songs correctly',
-    build: () async {
+  test('SongsListBloc expects SongsListInitial as initial state', () {
+    expect(songsListBloc.state, SongsListInitial());
+  });
+  blocTest<SongsListBloc, SongsListState>(
+    'FetchSongs and ShuffleSongs emits [SongsListLoading, SongsListReady, SongsListReady] when successful and shuffles songs correctly',
+    build: () {
       when(mockSongsRepository.fetchSongs())
           .thenAnswer((_) async => mockSongsList);
       return songsListBloc;
     },
-    act: (bloc) async {
+    act: (bloc) {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
-    skip: 0,
     expect: [
-      SongsListInitial(),
       SongsListLoading(),
       SongsListReady(mockSongsList),
       isA<SongsListReady>(),
     ],
-    verify: (_) async {
+    verify: (_) {
       verify(mockSongsRepository.fetchSongs()).called(1);
 
-      SongsListReady songsListAfterShuffle =
-          await songsListBloc.firstWhere((element) => element is SongsListReady);
+      SongsListReady songsListAfterShuffle = songsListBloc.state;
       expect(hasAdjacentArtists(songsListAfterShuffle.songs), false);
     },
   );
-  blocTest(
-    'FetchSongs and ShuffleSongs emits [SongsListInitial, SongsListLoading, SongsListReady] when empty list',
-    build: () async {
+  blocTest<SongsListBloc, SongsListState>(
+    'FetchSongs and ShuffleSongs emits [SongsListLoading, SongsListReady] when empty list',
+    build: () {
       when(mockSongsRepository.fetchSongs()).thenAnswer((_) async => []);
       return songsListBloc;
     },
-    act: (bloc) async {
+    act: (bloc) {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
-    skip: 0,
     expect: [
-      SongsListInitial(),
       SongsListLoading(),
       SongsListReady([]),
     ],
-    verify: (_) async {
+    verify: (_) {
       verify(mockSongsRepository.fetchSongs()).called(1);
     },
   );
-  blocTest(
-    'FetchSongs and ShuffleSongs emits [SongsListInitial, SongsListLoading, SongsListReady] when list is null',
-    build: () async {
+  blocTest<SongsListBloc, SongsListState>(
+    'FetchSongs and ShuffleSongs emits [SongsListLoading, SongsListReady] when list is null',
+    build: () {
       when(mockSongsRepository.fetchSongs()).thenAnswer((_) async => null);
       return songsListBloc;
     },
-    act: (bloc) async {
+    act: (bloc) {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
-    skip: 0,
     expect: [
-      SongsListInitial(),
       SongsListLoading(),
       SongsListReady(null),
     ],
-    verify: (_) async {
+    verify: (_) {
       verify(mockSongsRepository.fetchSongs()).called(1);
     },
   );
-  blocTest(
+  blocTest<SongsListBloc, SongsListState>(
     'FetchSongs emits [SongsListLoading, SongsListError] when failure',
-    build: () async {
+    build: () {
       when(mockSongsRepository.fetchSongs()).thenThrow(Error());
       return SongsListBloc(mockSongsRepository);
     },
@@ -95,7 +91,7 @@ void main() {
       SongsListLoading(),
       SongsListError(),
     ],
-    verify: (_) async {
+    verify: (_) {
       verify(mockSongsRepository.fetchSongs()).called(1);
     },
   );

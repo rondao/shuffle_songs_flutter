@@ -16,10 +16,7 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
   SongsRepository songsRepository;
   var _songs = <Song>[];
 
-  SongsListBloc(this.songsRepository);
-
-  @override
-  SongsListState get initialState => SongsListInitial();
+  SongsListBloc(this.songsRepository) : super(SongsListInitial());
 
   @override
   Stream<SongsListState> mapEventToState(
