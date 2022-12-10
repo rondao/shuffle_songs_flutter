@@ -32,7 +32,7 @@ void main() {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
-    expect: [
+    expect: () => [
       SongsListLoading(),
       SongsListReady(mockSongsList),
       isA<SongsListReady>(),
@@ -54,7 +54,7 @@ void main() {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
-    expect: [
+    expect: () => [
       SongsListLoading(),
       SongsListReady([]),
     ],
@@ -72,7 +72,7 @@ void main() {
       bloc.add(SongsListEvent.fetchSongs);
       bloc.add(SongsListEvent.shuffleSongs);
     },
-    expect: [
+    expect: () => [
       SongsListLoading(),
       SongsListReady(null),
     ],
@@ -87,7 +87,7 @@ void main() {
       return SongsListBloc(mockSongsRepository);
     },
     act: (bloc) => bloc.add(SongsListEvent.fetchSongs),
-    expect: [
+    expect: () => [
       SongsListLoading(),
       SongsListError(),
     ],

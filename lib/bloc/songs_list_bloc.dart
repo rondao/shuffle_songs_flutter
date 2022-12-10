@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
@@ -16,29 +15,26 @@ class SongsListBloc extends Bloc<SongsListEvent, SongsListState> {
   SongsRepository songsRepository;
   var _songs = <Song>[];
 
-  SongsListBloc(this.songsRepository) : super(SongsListInitial());
-
-  @override
-  Stream<SongsListState> mapEventToState(
-    SongsListEvent event,
-  ) async* {
-    switch (event) {
-      case SongsListEvent.fetchSongs:
-        yield SongsListLoading();
-        try {
-          _songs = await songsRepository.fetchSongs();
-          yield SongsListReady(_songs);
-        } catch (e) {
-          yield SongsListError();
-        }
-        break;
-      case SongsListEvent.shuffleSongs:
-        if (_songs != null && _songs.isNotEmpty) {
-          _songs = shuffleSongs(_songs);
-          yield SongsListReady(_songs);
-        }
-        break;
-    }
+  SongsListBloc(this.songsRepository) : super(SongsListInitial()) {
+    on<SongsListEvent>(((event, emit) async {
+      switch (event) {
+        case SongsListEvent.fetchSongs:
+          emit(SongsListLoading());
+          try {
+            _songs = await songsRepository.fetchSongs();
+            emit(SongsListReady(_songs));
+          } catch (e) {
+            emit(SongsListError());
+          }
+          break;
+        case SongsListEvent.shuffleSongs:
+          if (_songs != null && _songs.isNotEmpty) {
+            _songs = shuffleSongs(_songs);
+            emit(SongsListReady(_songs));
+          }
+          break;
+      }
+    }));
   }
 
   List<Song> shuffleSongs(List<Song> songs) {

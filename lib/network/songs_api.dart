@@ -17,8 +17,8 @@ class SongsNetworkRepository implements SongsRepository {
 
   @override
   Future<List<Song>> fetchSongs() async {
-    final response =
-        await http.get(_baseUrl + _lookupEndPoint + _defaultLookupParams);
+    final response = await http
+        .get(Uri.parse(_baseUrl + _lookupEndPoint + _defaultLookupParams));
 
     return compute(parseSongs, response.body);
   }
